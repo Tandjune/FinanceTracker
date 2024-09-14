@@ -35,3 +35,7 @@ def get_category():
              return categories[cat]
         print("The type of transaction should be: 'd' or 'w' " )
         return get_category()
+
+def get_description(txt = " "):
+     txt = input("Give a discription of the transaction or just press Enter: ")
+     return txt

@@ -1,8 +1,5 @@
 import pandas as pd
 import csv
-from datetime import datetime as dt
-
-
 
 
 class CSV:
@@ -29,7 +26,6 @@ class CSV:
             writer = csv.DictWriter(csvFile, fieldnames=self.columns)
             writer.writerow(new)
         print("New entry added successfully")
-
 
 
 CSV.create_file()
