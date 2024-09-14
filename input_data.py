@@ -3,7 +3,7 @@ from datetime import datetime as dt
 
 date_format = "%d/%m/%Y"
 x = lambda:dt.now().strftime(date_format)
-categories = { "d": "Deposit", "w": "withdraw"}
+categories = { "d": "deposit", "w": "withdraw"}
 
 def get_date():
     date_str = input("Give the date of the transaction (format: dd/mm/yyyy) or press Enter to use today's date: ")
