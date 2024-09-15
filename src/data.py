@@ -42,7 +42,7 @@ class CSV:
         if filtered_df.empty:
             print("No transaction found for the range!")
         else:
-            print(f"Transaction(s) from the {dt.strftime(start_date, self.format)} to the {dt.strftime(end_date, self.format)}")
+            print(f"\nTransaction(s) from the {dt.strftime(start_date, self.format)} to the {dt.strftime(end_date, self.format)}")
             print(filtered_df.to_string(index=False, formatters={"date": lambda x: x.strftime(self.format)}))
 
         total_income = filtered_df[filtered_df["category"] == "deposit"]["amount"].sum()
@@ -51,4 +51,6 @@ class CSV:
         print(f"Total Income: {total_income:.2f}€")
         print(f"Total Expense: {total_expense:.2f}€")
         print(f"Nette saving: {(total_income - total_expense):.2f}€")
+
+        return filtered_df
 
