@@ -1,4 +1,4 @@
-import data
+import data as data
 import input_data as inda
 
 

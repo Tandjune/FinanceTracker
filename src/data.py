@@ -4,7 +4,7 @@ import csv
 
 
 class CSV:
-    csv_file = "finance_data.csv"
+    csv_file = "../finance_data.csv"
     columns = ["date", "amount", "category", "description"]
     format = "%d/%m/%Y"
 
