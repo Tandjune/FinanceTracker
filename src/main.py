@@ -1,19 +1,20 @@
-import data as data
+import data
 import input_data as inda
 
 def add():
+    prompt = "Give the date of the transaction (format: dd/mm/yyyy) or press Enter to use today's date: "
+
     data.CSV.create_file()
-    date = inda.get_date()
+    date = inda.get_date(prompt)
     amount = inda.get_amount()
     category = inda.get_category()
     description = inda.get_description()
     data.CSV.add_entry(date, amount, category, description)
 
 def filter():
-    start_date = input("Give the start date: ")
-    end_date = input("Give the end date: ")
+    dates = inda.get_filter_date()
 
-    data.CSV.filter_transactions(start_date, end_date)
+    data.CSV.filter_transactions(dates[0], dates[1])
 
 def app():
     while True:
@@ -34,11 +35,3 @@ def app():
 
 if __name__ == "__main__":
     app()
-
-
-
-
-
-
-    
-

@@ -5,18 +5,14 @@ date_format = "%d/%m/%Y"
 x = lambda:dt.now().strftime(date_format)
 categories = { "d": "deposit", "w": "withdraw"}
 
-def get_date():
-    date_str = input("Give the date of the transaction (format: dd/mm/yyyy) or press Enter to use today's date: ")
+def get_date(prompt = ""):
+    
+    date_str = input(prompt)
     if not date_str:
         return dt.today().strftime(date_format)
     
-    try:
-        valide_date = dt.strptime(date_str, date_format)
-        return valide_date.strftime(date_format)
-    except ValueError:
-        print("Invalid date format. Please enter the date in this format: dd/mm/yyyy")
-        return get_date()
-
+    date = check_date_format(date_str)
+    return date if date else get_date(prompt)
 
 def get_amount():
         try:
@@ -39,3 +35,23 @@ def get_category():
 def get_description(txt = " "):
      txt = input("Give a discription of the transaction or just press Enter: ")
      return txt
+
+def check_date_format(date):
+    
+    try:
+        valide_date = dt.strptime(date, date_format)
+        return valide_date.strftime(date_format)
+    except ValueError:
+        print("Invalid date format. Please enter the date in this format: dd/mm/yyyy")
+        return ""
+    
+def get_filter_date():
+     prompt = "Give the start date: "
+     date = get_date(prompt)
+     start_date = date if date else get_date(prompt)
+     prompt = "Give the end date: "
+     date = get_date(prompt)
+     end_date = date if date else get_date(prompt)
+
+     return (start_date, end_date)
+     

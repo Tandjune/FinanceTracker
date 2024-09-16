@@ -36,8 +36,9 @@ class CSV:
         start_date = dt.strptime(start_date, self.format)
         end_date = dt.strptime(end_date, self.format)
 
-        mask = (df["date"] >= start_date) & (df["date"] <= end_date)
-        filtered_df = df.loc[mask]
+        # mask = (df["date"] >= start_date) & (df["date"] <= end_date)
+        # filtered_df = df.loc[mask]
+        filtered_df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
 
         if filtered_df.empty:
             print("No transaction found for the range!")
