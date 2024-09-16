@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime as dt
 import csv
+import matplotlib.pyplot as plt
 
 
 class CSV:
@@ -47,11 +48,29 @@ class CSV:
             print(filtered_df.to_string(index=False, formatters={"date": lambda x: x.strftime(self.format)}))
 
         total_income = filtered_df[filtered_df["category"] == "deposit"]["amount"].sum()
-        total_expense = filtered_df[filtered_df["category"] == "withdraw"]["amount"].sum()
+        total_expense = filtered_df[filtered_df["category"] == "withdrawal"]["amount"].sum()
         print("\nSummary:")
         print(f"Total Income: {total_income:.2f}€")
         print(f"Total Expense: {total_expense:.2f}€")
         print(f"Nette saving: {(total_income - total_expense):.2f}€")
 
         return filtered_df
+    
+    @classmethod
+    def plot_transactions(self, df):
+        df.set_index("date", inplace=True)
+
+        income_df = (df[df["category"] == "deposit"].resample("D").sum().reindex(df.index, fill_value=0))
+        expense_df = (df[df["category"] == "withdrawal"].resample("D").sum().reindex(df.index, fill_value=0)) 
+
+        plt.figure(figsize=(10, 5))
+        plt.plot(income_df.index, income_df["amount"], label="Deposit", color="g")
+        plt.plot(income_df.index, expense_df["amount"], label="Withdrawal", color="r")
+        plt.xlabel("Date")
+        plt.ylabel("Amount")
+        plt.title("Deposits and Withdrawal over Time")
+        plt.legend()
+        plt.grid(True)
+        plt.show()
+
 

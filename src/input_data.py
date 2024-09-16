@@ -3,7 +3,7 @@ from datetime import datetime as dt
 
 date_format = "%d/%m/%Y"
 x = lambda:dt.now().strftime(date_format)
-categories = { "d": "deposit", "w": "withdraw"}
+categories = { "d": "deposit", "w": "withdrawal"}
 
 def get_date(prompt = ""):
     
@@ -25,7 +25,7 @@ def get_amount():
             return get_amount()
 
 def get_category():
-        cat = input("What type of transaction? Deposit (d) or Withdraw (W): ").lower()
+        cat = input("What type of transaction? Deposit (d) or Withdrawal (W): ").lower()
         
         if cat in categories:
              return categories[cat]
