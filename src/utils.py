@@ -37,6 +37,7 @@ class CSV:
         start_date = dt.strptime(start_date, self.format)
         end_date = dt.strptime(end_date, self.format)
 
+        df = df.sort_values(by="date", key=lambda col: pd.to_datetime(col, "%Y%m%d"))
         # mask = (df["date"] >= start_date) & (df["date"] <= end_date)
         # filtered_df = df.loc[mask]
         filtered_df = df[(df["date"] >= start_date) & (df["date"] <= end_date)]
