@@ -29,10 +29,16 @@ def app():
         elif choice =="2":
             df = filter()
             res = ""
-            while res not in ["y", "n"]:
-                res = input("Do you want to see a plot? (y/n): ").lower()
-                if res == "y":
-                    utils.CSV.plot_transactions(df)
+            while res not in ["1","2","3","4"]:
+                print("\nDo you want to see the figure(s) of the Transactions? ")
+                print("1. The line chart of the ")
+                print("2. The bar chart")
+                print("3. Both")
+                print("4. None")
+
+                res = input("Enter your choice (1-4): ").lower()
+                if res in ["1","2","3"]:
+                    utils.CSV.plot_transactions(df,res)
         elif choice == "3":
             break
         else:

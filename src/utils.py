@@ -2,6 +2,7 @@ import pandas as pd
 from datetime import datetime as dt
 import csv
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 class CSV:
@@ -58,20 +59,60 @@ class CSV:
         return filtered_df
     
     @classmethod
-    def plot_transactions(self, df):
+    def plot_transactions(self, df, choice):
         df.set_index("date", inplace=True)
 
-        income_df = (df[df["category"] == "deposit"].resample("D").sum().reindex(df.index, fill_value=0))
-        expense_df = (df[df["category"] == "withdrawal"].resample("D").sum().reindex(df.index, fill_value=0)) 
+        if choice in ["1","3"]:
+            income_df = (df[df["category"] == "deposit"].resample("D").sum().reindex(df.index, fill_value=0))
+            expense_df = (df[df["category"] == "withdrawal"].resample("D").sum().reindex(df.index, fill_value=0)) 
 
-        plt.figure(figsize=(10, 5))
-        plt.plot(income_df.index, income_df["amount"], label="Deposit", color="g")
-        plt.plot(income_df.index, expense_df["amount"], label="Withdrawal", color="r")
-        plt.xlabel("Date")
-        plt.ylabel("Amount")
-        plt.title("Deposits and Withdrawal over Time")
-        plt.legend()
-        plt.grid(True)
+            plt.figure(figsize=(10, 5))
+            plt.plot(income_df.index, income_df["amount"], label="Deposit", color="g")
+            plt.plot(income_df.index, expense_df["amount"], label="Withdrawal", color="r")
+            plt.xlabel("Date")
+            plt.ylabel("Amount")
+            plt.title("Deposits and Withdrawal over Time")
+            plt.legend()
+            plt.grid(True)
+
+        if choice in ["2","3"]:
+            df = df.reset_index()
+            df2 = df.filter(["date","category", "amount"])
+            df2["date"] = df2["date"].apply(lambda x: x.strftime('%m/%Y'))
+            df2_income_filter = df2[df2["category"] == "deposit"].filter(["date", "amount"]).reset_index(drop=True)
+            df2_expense_filter = df2[df2["category"] == "withdrawal"].filter(["date", "amount"]).reset_index(drop=True)
+
+
+            df21 = df2_income_filter.groupby(["date"]).sum().reset_index().rename(columns={"amount": "deposit"})
+            df22 = df2_expense_filter.groupby(["date"]).sum().reset_index().rename(columns={"amount": "withdrawal"})
+
+            df3 = df21.merge(df22, how="outer", on="date").fillna(0)
+            max_ob = df3.max()
+            max_value = max(max_ob["deposit"], max_ob["withdrawal"])
+            df3.set_index("date", inplace=True)
+            df_dict = df3.to_dict()
+            keys = df_dict["deposit"].keys()
+
+
+            x = np.arange(len(keys)) 
+            width = 0.25  
+            multiplier = 0
+
+            fig, ax = plt.subplots(layout='constrained')
+
+            for category, i in df_dict.items():
+                offset = width * multiplier
+                rects = ax.bar(x + offset, i.values(), width, label=category)
+                ax.bar_label(rects, padding=3)
+                multiplier += 1
+
+            ax.set_ylabel('Amount (€)')
+            ax.set_xlabel('Date')
+            ax.set_title('Transactions')
+            ax.set_xticks(x + 0.12, keys)
+            ax.legend(loc='upper left', ncols=3)
+            ax.set_ylim(0, max_value + 700)
+
         plt.show()
 
 
