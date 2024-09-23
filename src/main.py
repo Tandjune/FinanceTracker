@@ -2,7 +2,7 @@ import utils
 import input_data as inda
 
 def add():
-    prompt = "Give the date of the transaction (format: dd/mm/yyyy) or press Enter to use today's date: "
+    prompt = "Give the date of the transaction (format: dd/mm/yyyy or mm/yyyy or yyyy) or press Enter to use today's date: "
 
     utils.CSV.create_file()
     date = inda.get_date(prompt)
